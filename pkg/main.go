@@ -123,6 +123,27 @@ func setupArguments(ctx context.Context, secretFetcher secretFetcher) {
 		}
 	}
 
+	if v := os.Getenv("HTTP_TIMEOUT"); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			timeout = d
+		}
+	}
+	if v := os.Getenv("MIN_BACKOFF"); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			minBackoff = d
+		}
+	}
+	if v := os.Getenv("MAX_BACKOFF"); v != "" {
+		if d, err := time.ParseDuration(v); err == nil {
+			maxBackoff = d
+		}
+	}
+	if v := os.Getenv("MAX_RETRIES"); v != "" {
+		if n, err := strconv.Atoi(v); err == nil {
+			maxRetries = n
+		}
+	}
+
 	printLogLine = true
 	if strings.EqualFold(os.Getenv("PRINT_LOG_LINE"), "false") {
 		printLogLine = false
