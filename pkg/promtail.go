@@ -23,16 +23,16 @@ import (
 )
 
 // HTTP and retry tuning. Defaults are sized for AWS Lambda's typical 60s
-// invocation budget: worst-case 3 attempts × 10s timeout + 2 backoffs × 2s
-// ≈ 34s, leaving headroom for the runtime to return cleanly instead of
+// invocation budget: worst-case 3 attempts × 15s timeout + 2 backoffs × 2s
+// ≈ 49s, leaving headroom for the runtime to return cleanly instead of
 // being force-killed (which shows up as nginx 499s on the gateway side).
 // Loki ingestion typically responds in milliseconds, but Lambda VPC paths
 // and TLS handshakes can occasionally stall for several seconds.
 //
 // Override at runtime via env vars HTTP_TIMEOUT, MIN_BACKOFF, MAX_BACKOFF
-// (Go duration strings, e.g. "10s") and MAX_RETRIES (integer).
+// (Go duration strings, e.g. "15s") and MAX_RETRIES (integer).
 var (
-	timeout    = 10 * time.Second
+	timeout    = 15 * time.Second
 	minBackoff = 100 * time.Millisecond
 	maxBackoff = 2 * time.Second
 	maxRetries = 3
